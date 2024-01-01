@@ -1,0 +1,75 @@
+
+# This is a basic workflow to help you get started with Actions
+
+name: CI/CD PRODUCTION
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [main]
+  pull_request:
+    branches: [none]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    name: 'Build to production Web'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/server.key
+          chmod 600 ~/.ssh/server.key
+          cat >>~/.ssh/config <<END
+          Host server
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/server.key
+            StrictHostKeyChecking no
+            Port $PORT
+          END
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST_PROD }}
+          PORT: ${{ secrets.PORT }}
+
+      - name: Building into server
+        run: |
+          ssh server 'cd /home/ahmed_abdelraouf/taskfollow_web_production && git reset --hard && git pull origin main'
+          ssh server 'cd /home/ahmed_abdelraouf/taskfollow_web_production && npm install && npm run build'
+      - run: echo "🎉 Build complete."
+  # This workflow contains a single job called "deploy"
+  deploy:
+    name: 'Deploy to production Web'
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/server.key
+          chmod 600 ~/.ssh/server.key
+          cat >>~/.ssh/config <<END
+          Host server
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/server.key
+            StrictHostKeyChecking no
+            Port $PORT
+          END
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST_PROD }}
+          PORT: ${{ secrets.PORT }}
+
+      - name: Deploying into server
+        run: |
+          ssh server 'pm2 restart web_production'
+      - run: echo "🎉 Deployed successfully."
