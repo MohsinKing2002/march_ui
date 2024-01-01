@@ -33,7 +33,7 @@ export default function Page() {
     <>
       <Head>
         <meta name="prism.publicationDate" content="meta data placeholder" />
-        <title>TaskFollow | Your Task Manager</title>
+        <title>March</title>
       </Head>
       {noLoginSession && <Home />}
     </>
