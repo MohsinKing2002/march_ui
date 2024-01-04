@@ -10,7 +10,8 @@ module.exports = {
         'primary-text': '#111827',
         'gray-medium': '#667085',
         'dark-indigo': '#27104E',
-        'check-green': '#04AE01'
+        'check-green': '#04AE01',
+        iconClr: 'dd'
       },
       screens: {
         xs: { max: '515px' }

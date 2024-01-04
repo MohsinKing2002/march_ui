@@ -22,7 +22,6 @@ const Home = () => {
       .Login(formValue)
       .then((response) => {
         if (response) {
-          console.log('response', response.response);
           dispatch(login(response?.response));
         }
         return response;

@@ -1,9 +1,9 @@
 import auth from './auth';
-import business from './business';
+import workspace from './workspace';
 
 const API = {
   auth,
-  business
+  workspace
 };
 
 export default API;
