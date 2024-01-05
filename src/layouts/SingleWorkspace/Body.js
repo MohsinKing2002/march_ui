@@ -10,7 +10,7 @@ import SmallHeader from '../Home/SmallHeader';
 import SmallFooter from '../Home/SmallFooter';
 import Image from 'next/image';
 import { PlusOutlined } from '@ant-design/icons';
-import AddWorkspaceModal from './AddWorkspaceModal';
+import AddWorkspaceModal from './InviteMemberModal';
 import moment from 'moment';
 
 const Body = ({ _this }) => {
@@ -21,7 +21,7 @@ const Body = ({ _this }) => {
         title={
           <div className="mt-2 flex items-center justify-between py-2">
             <p className="text-primary-text text-xl font-medium leading-loose">
-              Workspaces ({_this.userWorkspaces?.length})
+              Members ({_this.userWorkspaces?.length})
             </p>
 
             <button
@@ -29,13 +29,13 @@ const Body = ({ _this }) => {
               className="text-white bg-primary border-0 py-2 px-4 focus:outline-none hover:bg-primary-dark rounded-lg text-base font-medium inline-flex items-center"
             >
               <PlusOutlined className="mr-2" />
-              Create Workspace
+              Invite Members
             </button>
           </div>
         }
         className="bg-bg-gray text-gray-medium tracking-wider flex flex-col justify-start w-full min-h-full"
       >
-        {_this.userWorkspaces?.length === 0 ? (
+        {/* {_this.userWorkspaces?.length === 0 ? (
           <div className="flex justify-center items-center">No Workspaces available</div>
         ) : (
           <div className="flex flex-wrap items-start justify-evenly lg:justify-between">
@@ -70,7 +70,8 @@ const Body = ({ _this }) => {
                 </Link>
               ))}
           </div>
-        )}
+        )} */}
+        <h1>all members will be shown here</h1>
       </Card>
       <AddWorkspaceModal {..._this} />
     </>

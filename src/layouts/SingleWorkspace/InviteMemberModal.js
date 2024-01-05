@@ -12,7 +12,7 @@ const AddWorkspaceModal = (_this) => {
             <div className="flex justify-center items-center">
               <BsPersonWorkspace className="text-gray-medium mr-4" size={25} />
               <span className="text-gray-medium text-2xl font-medium leading-loose">
-                New Workspace
+                Invite New Member
               </span>
             </div>
             <AiOutlineClose

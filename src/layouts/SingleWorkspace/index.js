@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import country_code from '@/utility/country.json';
 import { Container } from '@/components';
 
-const Workspaces = () => {
+const SingleWorkspace = () => {
   const router = useRouter();
   const { businessData } = router.query;
   const dispatch = useDispatch();
@@ -104,4 +104,4 @@ const Workspaces = () => {
   );
 };
 
-export default Workspaces;
+export default SingleWorkspace;
