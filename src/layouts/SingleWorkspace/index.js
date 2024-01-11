@@ -3,7 +3,7 @@ import Body from './Body';
 import API from '@/api';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { loadingStart, loadingStop, login, signup } from '@/redux/action';
+import { loadingStart, loadingStop } from '@/redux/action';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import country_code from '@/utility/country.json';
@@ -11,72 +11,91 @@ import { Container } from '@/components';
 
 const SingleWorkspace = () => {
   const router = useRouter();
-  const { businessData } = router.query;
   const dispatch = useDispatch();
-  const userDetails = useSelector((state) => state.session.userSession);
+  const { slug } = router.query;
+  // console.log(slug);
   const [countryList, setCountryList] = useState(country_code.country_code);
-  const [otpReceived, setOtpReceived] = useState(false);
-  const [OTP, setOTP] = useState('');
-  const [servicesInput, setServicesInput] = useState('');
-  const [AddWorkspaceModalVisibility, setAddWorkspaceModalVisibility] = useState(false);
-  const [teamMemberDetails, setTeamMemberDetails] = useState(false);
-  const [addTeamMemberData, setAddTeamMemberData] = useState({
-    member_name: '',
-    member_email: '',
-    member_designation: ''
-  });
+  const [InviteMemberModalVisibility, setInviteMemberModalVisibility] = useState(false);
+  const [NewSpaceModalVisibility, setNewSpaceModalVisibility] = useState(false);
 
-  const [userWorkspaces, setUserWorkspaces] = useState([]);
+  const [workspaceMembers, setWorkspaceMembers] = useState([]);
+  const [spaces, setSpaces] = useState([]);
   const [formValue, setFormValue] = useState({
-    name: '',
-    slug: ''
+    email: '',
+    role: '',
+    redirectUrl: '/',
+    message: 'Welcome to team'
   });
-  const [workspaceNotAvailable, setWorkspaceNotAvailable] = useState(true);
-
-  // console.log('avail workspace', formValue.slug);
-  // console.log('avail workspace 2', workspaceNotAvailable);
+  const [newSpaceValue, setNewSpaceValue] = useState({
+    name: '',
+    identifier: ''
+  });
+  // console.log('formValue', newSpaceValue);
 
   useEffect(() => {
-    GetWorkspaces();
-  }, []);
+    GetWorkspaceMembers();
+    GetWorkspaceSpaces();
+  }, [slug]);
 
-  const CheackWorkspaceAvailibility = () => {
-    // dispatch(loadingStart());
-    API.workspace
-      .CheackWorkspaceAvailibility(formValue.slug)
-      .then((response) => {
-        if (response) setWorkspaceNotAvailable(false);
-      })
-      .finally(() => {
-        // dispatch(loadingStop());
-      });
-  };
-
-  const GetWorkspaces = () => {
-    // dispatch(loadingStart());
-    API.workspace
-      .GetUserWorkspaces()
-      .then((response) => {
-        if (response) {
-          setUserWorkspaces(response.response);
-        }
-      })
-      .finally(() => {
-        // dispatch(loadingStop());
-      });
-  };
-
-  const onAddNewWorkspace = () => {
+  const GetWorkspaceMembers = () => {
     dispatch(loadingStart());
     API.workspace
-      .CreateNewWorkspace(formValue)
+      .GetWorkspaceMembers(slug)
       .then((response) => {
-        if (response.status == 410) {
-          toast.error(response.response);
-        } else if (response.status == 200) {
-          GetWorkspaces();
-          toast.success('Workspace created successfully.');
+        if (response) {
+          setWorkspaceMembers(response.response);
         }
+      })
+      .finally(() => {
+        dispatch(loadingStop());
+      });
+  };
+
+  const GetWorkspaceSpaces = () => {
+    dispatch(loadingStart());
+    API.workspace
+      .GetSpacesOfWorkspace(slug)
+      .then((response) => {
+        if (response) {
+          setSpaces(response.response);
+        }
+      })
+      .finally(() => {
+        dispatch(loadingStop());
+      });
+  };
+
+  const onAddNewSpace = () => {
+    let params = newSpaceValue;
+    if (slug) params = { ...params, slug: slug };
+    dispatch(loadingStart());
+    API.workspace
+      .CreateNewSpace(params)
+      .then((response) => {
+        if (response) {
+          toast.success('New Space Added.');
+          GetWorkspaceSpaces();
+          setNewSpaceValue((prev) => ({ ...prev, name: '', identifier: '' }));
+        }
+      })
+      .finally(() => {
+        dispatch(loadingStop());
+      });
+  };
+  const onAddNewMember = () => {
+    let params = formValue;
+    if (slug) params = { ...params, slug: slug };
+    dispatch(loadingStart());
+    API.workspace
+      .AddMemberToWorkspace(params)
+      .then((response) => {
+        console.log('res add', response);
+        // if (response.status == 410) {
+        //   toast.error(response.response);
+        // } else if (response.status == 200) {
+        //   GetWorkspaces();
+        //   toast.success('Workspace created successfully.');
+        // }
       })
       .finally(() => {
         dispatch(loadingStop());
@@ -86,15 +105,19 @@ const SingleWorkspace = () => {
   const _this = {
     formValue,
     setFormValue,
+    newSpaceValue,
+    setNewSpaceValue,
     countryList,
-    AddWorkspaceModalVisibility,
-    CheackWorkspaceAvailibility,
-    setAddWorkspaceModalVisibility,
-    workspaceNotAvailable,
-    setWorkspaceNotAvailable,
-    userWorkspaces,
-    setUserWorkspaces,
-    onAddNewWorkspace
+    InviteMemberModalVisibility,
+    setInviteMemberModalVisibility,
+    NewSpaceModalVisibility,
+    setNewSpaceModalVisibility,
+    workspaceMembers,
+    setWorkspaceMembers,
+    spaces,
+    setSpaces,
+    onAddNewMember,
+    onAddNewSpace
   };
 
   return (

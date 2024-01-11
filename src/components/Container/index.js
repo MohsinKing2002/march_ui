@@ -28,7 +28,7 @@ const Container = (props) => {
 
   useEffect(() => {
     if (collapsed == null) {
-      if (window.innerWidth > 768) dispatch(setCollapsed(false));
+      if (window.innerWidth > 640) dispatch(setCollapsed(false));
       else dispatch(setCollapsed(true));
     }
   }, []);
@@ -36,7 +36,7 @@ const Container = (props) => {
   const onMenuClick = ({ key }) => {
     router.push(key);
     dispatch(setActiveRoute(key));
-    if (window.innerWidth && window.innerWidth < 768) dispatch(setCollapsed(true));
+    if (window.innerWidth && window.innerWidth <= 640) dispatch(setCollapsed(true));
   };
 
   const toggleCollapsed = () => {
@@ -93,12 +93,12 @@ const Container = (props) => {
     <>
       <div className="flex flex-1 min-h-screen flex-row relative bg-background">
         <div
-          className={`bg-white relative flex flex-col header_nav_profile menu ${
-            collapsed ? 'lg:w-20 w-0' : 'lg:w-56 w-screen'
+          className={`bg-white relative flex flex-col z-10 header_nav_profile menu ${
+            collapsed ? 'md:w-20 w-0' : 'md:w-56 w-screen'
           }`}
         >
           <div
-            className="absolute cursor-pointer top-4 right-4 lg:hidden flex justify-center items-center w-10 h-10 border border-secondary rounded-md z-50"
+            className="absolute cursor-pointer top-4 right-4 md:hidden flex justify-center items-center w-10 h-10 border border-secondary rounded-md z-50"
             onClick={toggleCollapsed}
           >
             <CloseOutlined className="text-xl text-secondary" />
@@ -128,7 +128,7 @@ const Container = (props) => {
             items={menu}
           />
         </div>
-        <div className={`lg:flex-1 transition-all ${collapsed ? 'w-full' : 'w-0'}`}>
+        <div className={`md:flex-1 transition-all ${collapsed ? 'w-full' : 'w-0'}`}>
           <div className="flex flex-col justify-center shadow-md w-full px-0 bg-white">
             <div className="flex flex-row items-center pl-2 py-4">
               <div className="ml-1 mr-10 cursor-pointer" onClick={toggleCollapsed}>

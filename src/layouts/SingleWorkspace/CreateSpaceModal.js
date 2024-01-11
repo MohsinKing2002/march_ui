@@ -3,7 +3,7 @@ import { Input, Button, Select, Drawer } from 'antd';
 import { AiOutlineClose, AiOutlineUserAdd } from 'react-icons/ai';
 import { BsPersonWorkspace } from 'react-icons/bs';
 
-const AddWorkspaceModal = (_this) => {
+const CreateSpaceModal = (_this) => {
   return (
     <>
       <Drawer
@@ -12,19 +12,19 @@ const AddWorkspaceModal = (_this) => {
             <div className="flex justify-center items-center">
               <BsPersonWorkspace className="text-gray-medium mr-4" size={25} />
               <span className="text-gray-medium text-2xl font-medium leading-loose">
-                Invite New Member
+                Create New Space
               </span>
             </div>
             <AiOutlineClose
-              onClick={() => _this.setInviteMemberModalVisibility(false)}
+              onClick={() => _this.setNewSpaceModalVisibility(false)}
               size={22}
               className="text-gray-medium cursor-pointer"
             />
           </div>
         }
         placement="right"
-        onClose={() => _this.setInviteMemberModalVisibility(false)}
-        open={_this.InviteMemberModalVisibility}
+        onClose={() => _this.setNewSpaceModalVisibility(false)}
+        open={_this.NewSpaceModalVisibility}
         width={window.innerWidth > 600 ? 500 : window.innerWidth - 50}
         closable={false}
         footer={
@@ -32,13 +32,13 @@ const AddWorkspaceModal = (_this) => {
             <Button
               className="text-base font-semibold"
               size="large"
-              onClick={() => _this.setInviteMemberModalVisibility(false)}
+              onClick={() => _this.setNewSpaceModalVisibility(false)}
             >
               Cancel
             </Button>
             <Button
               size="large"
-              onClick={() => _this.onAddNewMember()}
+              onClick={() => _this.onAddNewSpace()}
               type="primar"
               className="ml-3 mybtns text-base font-semibold"
             >
@@ -49,26 +49,26 @@ const AddWorkspaceModal = (_this) => {
       >
         <div className="flex flex-col justify-center items-center xs:items-stretch w-full">
           <div className="py-3">
-            <p className="text-label text-sm font-medium leading-tight pb-1">Email*</p>
+            <p className="text-label text-sm font-medium leading-tight pb-1">Name*</p>
             <Input
               className="w-[420px] xs:w-full"
               size="large"
-              placeholder="Enter member email"
-              value={_this.formValue.email}
+              placeholder="Enter space name"
+              value={_this.newSpaceValue.name}
               onChange={(e) => {
-                _this.setFormValue((prev) => ({ ...prev, email: e.target.value }));
+                _this.setNewSpaceValue((prev) => ({ ...prev, name: e.target.value }));
               }}
             />
           </div>
           <div className="py-3">
-            <p className="text-label text-sm font-medium leading-tight pb-1">Role*</p>
+            <p className="text-label text-sm font-medium leading-tight pb-1">Identifier*</p>
             <Input
               className="w-[420px] xs:w-full"
               size="large"
-              placeholder="Enter member role"
-              value={_this.formValue.role}
+              placeholder="Enter space identifier"
+              value={_this.newSpaceValue.identifier}
               onChange={(e) => {
-                _this.setFormValue((prev) => ({ ...prev, role: e.target.value }));
+                _this.setNewSpaceValue((prev) => ({ ...prev, identifier: e.target.value }));
               }}
             />
           </div>
@@ -78,4 +78,4 @@ const AddWorkspaceModal = (_this) => {
   );
 };
 
-export default AddWorkspaceModal;
+export default CreateSpaceModal;

@@ -6,7 +6,7 @@ const Loader = () => {
   return (
     <div className={styles.fullScreen}>
       <div className="relative w-[100px] h-[75px]">
-        <Image src="/images/mainloader.gif" alt="Task Follow Loader" width={500} height={500} />
+        <Image src="/images/mainloader.gif" alt="Loading..." width={500} height={500} />
       </div>
     </div>
   );
